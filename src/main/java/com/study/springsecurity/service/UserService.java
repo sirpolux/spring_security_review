@@ -16,6 +16,7 @@ public class UserService {
 
     private final UserRepo userRepo;
     private final AuthenticationManager authenticationManager;
+    private final JWTService jwtService;
 
     public Users save(Users users){
         users.setPassword(Utility.encoder.encode(users.getPassword()));
@@ -26,7 +27,7 @@ public class UserService {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         if (authentication.isAuthenticated()){
-            return "success";
+            return jwtService.generateToken(user.getUsername());
         }
         return "failed";
     }
