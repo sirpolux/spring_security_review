@@ -1,6 +1,7 @@
 package com.study.springsecurity.service;
 
 import com.study.springsecurity.model.User;
+import com.study.springsecurity.model.UserPrincipal;
 import com.study.springsecurity.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         if(user==null){
             throw new UsernameNotFoundException("user not found");
         }
-        return user;
+        return new UserPrincipal(user);
     }
 }
