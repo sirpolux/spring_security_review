@@ -13,4 +13,9 @@ public class TestController {
     public String test(HttpServletRequest httpServletRequest){
         return "Connection Successful " + httpServletRequest.getSession().getId();
     }
+
+    @GetMapping("/test")
+    public String test2(){
+        return  "SECOND TEST";
+    }
 }
