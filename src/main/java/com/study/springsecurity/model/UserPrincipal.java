@@ -2,31 +2,34 @@ package com.study.springsecurity.model;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
+
 
 public class UserPrincipal implements UserDetails {
 
-    private User user;
+    private Users users;
 
-    public UserPrincipal(User user){
-        this.user=user;
+    public UserPrincipal(Users users){
+        this.users = users;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return Collections.singleton(new SimpleGrantedAuthority("USER"));
     }
 
     @Override
     public @Nullable String getPassword() {
-        return user.getPassword();
+        return users.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return users.getUsername();
     }
 
     @Override

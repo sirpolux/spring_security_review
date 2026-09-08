@@ -1,6 +1,6 @@
 package com.study.springsecurity.service;
 
-import com.study.springsecurity.model.User;
+import com.study.springsecurity.model.Users;
 import com.study.springsecurity.model.UserPrincipal;
 import com.study.springsecurity.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +16,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUsername(username);
-        if(user==null){
+        Users users = userRepo.findByUsername(username);
+        if(users ==null){
             throw new UsernameNotFoundException("user not found");
         }
-        return new UserPrincipal(user);
+        return new UserPrincipal(users);
     }
 }
