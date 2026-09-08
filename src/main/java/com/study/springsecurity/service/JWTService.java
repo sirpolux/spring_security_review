@@ -1,6 +1,7 @@
 package com.study.springsecurity.service;
 
 
+import com.study.springsecurity.filters.JwtFilter;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class JWTService {
 
     private String secretKey = "";
+    private JwtFilter jwtFilter;
 
     public JWTService(){
         try {
