@@ -4,6 +4,7 @@ package com.study.springsecurity.controller;
 import com.study.springsecurity.model.Users;
 import com.study.springsecurity.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,5 +25,10 @@ public class UserController {
     public String login(@RequestBody Users user){
 //        System.out.println(user);
        return userService.verify(user);
+    }
+
+    @GetMapping("/person")
+    public String test(){
+        return "machong paul";
     }
 }
