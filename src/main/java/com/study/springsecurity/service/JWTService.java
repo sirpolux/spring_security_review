@@ -24,7 +24,6 @@ import java.util.function.Function;
 public class JWTService {
 
     private String secretKey = "";
-    private JwtFilter jwtFilter;
 
     public JWTService(){
         try {

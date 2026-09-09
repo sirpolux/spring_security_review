@@ -1,6 +1,7 @@
 package com.study.springsecurity.config;
 
 
+import com.study.springsecurity.filters.JwtFilter;
 import com.study.springsecurity.service.CustomUserDetailsService;
 import com.study.springsecurity.utility.Utility;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -30,9 +33,11 @@ public class SecurityConfig
 {
 
     private final CustomUserDetailsService userDetailsService;
+    private final JwtFilter filter;
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity){
-        httpSecurity.csrf(customizer->customizer.disable())  //disables csrf
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtFilter jwtFilter){
+
+        return httpSecurity.csrf(customizer->customizer.disable())  //disables csrf
         .authorizeHttpRequests(request->
                 request.requestMatchers("/user", "/login")
                         .permitAll()
@@ -40,27 +45,13 @@ public class SecurityConfig
                         .authenticated()) //ensures that every request is authenticated.
 //        .formLogin(Customizer.withDefaults())  //enables or login
         .httpBasic(Customizer.withDefaults())  //enables postman login or login via api
-        .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); //since we are disabling csrf
-        return httpSecurity.build();
+        .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+       // return httpSecurity.build();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService(){
-//        UserDetails user1 = User
-//                .withDefaultPasswordEncoder()
-//                .username("user")
-//                .password("1111")
-//                .roles("ADMIN")
-//                .build();
-//        UserDetails user2 = User
-//                .withDefaultPasswordEncoder()
-//                .username("user2")
-//                .password("2222")
-//                .roles("ADMIN", "USER")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(user1, user2);
-//    }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
